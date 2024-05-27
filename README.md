@@ -1,5 +1,4 @@
-# Desenvolvimento de Sistema para Maqueiros
-de Hospital Público
+# Desenvolvimento de Sistema para Maqueiros de Hospital Público
 
 ## Apresentação:
 O Hospital Geral Clériston Andrade reconhece a importância de aprimorar o
