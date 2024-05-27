@@ -6,8 +6,8 @@
       </div>
       <div class="form">
         <div class="inputForm">
-          <label for="usuario">Usuário</label>
-          <input type="text" id="usuario" v-model="usuario" />
+          <label for="email">Email</label>
+          <input type="text" id="email" v-model="email" />
         </div>
         <div class="inputForm">
           <label for="senha">Senha</label>
@@ -34,17 +34,25 @@
   </div>
 </template>
   
-  <script>
+<script>
+
+import apiService from '../services/apiService.js';
+
 export default {
   data() {
     return {
-      usuario: "",
+      email: "",
       senha: "",
     };
   },
   methods: {
     realizarLogin() {
-      console.log("Login:", this.usuario, this.senha);
+      apiService.login({ email: this.email, password: this.senha})
+      .then(response => {
+        console.log('Logn realizado com sucesso!', response)
+      }).catch(error => {
+        console.log('Erro ao realizar login!', error)
+      });
     },
   },
 };
