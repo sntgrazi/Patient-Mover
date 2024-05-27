@@ -1,0 +1,24 @@
+@import './base.css';
+
+#app {
+  width: 100%;
+  
+  font-weight: normal;
+  background: 
+    url('img/teste.png') no-repeat  center,
+    #040745;
+    background-size: auto;
+  height: 50vh;
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: row;
+  }
+}

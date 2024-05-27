@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PatientMover</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        aside {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            width: 250px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        aside .tablink {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+        aside .tablink i {
+            margin-right: 0.5rem;
+        }
+        aside .tablink:hover, aside .tablink.active {
+            background-color: #007bff;
+            color: white;
+        }
+        main {
+            flex: 1;
+            padding: 1rem;
+            background-color: #e9ecef;
+        }
+        .tabcontent {
+            display: none;
+        }
+        .tabcontent.active {
+            display: block;
+        }
+        .status-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+        }
+        .status-info div {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        form {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        form input, form textarea, form button {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PatientMover</h1>
+    </header>
+    <div class="container">
+        <aside>
+            <button class="tablink active" onclick="openTab(event, 'Transport')"><i class="fas fa-ambulance"></i> Criar Solicitação</button>
+            <button class="tablink" onclick="openTab(event, 'Incidents')"><i class="fas fa-exclamation-triangle"></i> Incidentes</button>
+            <button class="tablink" onclick="openTab(event, 'History')"><i class="fas fa-history"></i> Histórico de Transportes</button>
+            <button class="tablink" onclick="openTab(event, 'AllRequests')"><i class="fas fa-list"></i> Todas as Solicitações</button>
+        </aside>
+        <main>
+            <section id="Transport" class="tabcontent active">
+                <h2>Criar Solicitação de Transporte</h2>
+                <div class="status-info">
+                    <div>
+                        <span class="status-label">Em Transporte:</span>
+                        <span id="transporting-count">0</span>
+                    </div>
+                    <div>
+                        <span class="status-label">Aguardando:</span>
+                        <span id="pending-count">0</span>
+                    </div>
+                    <div>
+                        <span class="status-label">Concluídos:</span>
+                        <span id="completed-count">0</span>
+                    </div>
+                </div>
+                <form id="transport-form" onsubmit="submitRequest(event)">
+                    <label for="patient-name">Nome do Paciente:</label>
+                    <input type="text" id="patient-name" name="patient-name" required>
+                    <label for="patient-location">Localização Atual do Paciente:</label>
+                    <input type="text" id="patient-location" name="patient-location" required>
+                    <label for="destination">Destino:</label>
+                    <input type="text" id="destination" name="destination" required>
+                    <label for="transport-time">Horário Desejado para o Transporte:</label>
+                    <input type="datetime-local" id="transport-time" name="transport-time" required>
+                    <label for="additional-info">Informações Adicionais:</label>
+                    <textarea id="additional-info" name="additional-info" rows="4"></textarea>
+                    <button type="submit">Criar Solicitação</button>
+                </form>
+            </section>
+        
+            <section id="Incidents" class="tabcontent">
+                <h2>Histórico de Incidentes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Paciente</th>
+                            <th>Localização</th>
+                            <th>Descrição</th>
+                            <th>Severidade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="incident-list">
+                        <!-- Os itens do histórico de incidentes são preenchidos dinamicamente -->
+                        <tr>
+                            <td>2024-05-10</td>
+                            <td>10:30</td>
+                            <td>Maria</td>
+                            <td>Corredor</td>
+                            <td>Queda no corredor</td>
+                            <td>Alta</td>
+                        </tr>
+                        <tr>
+                            <td>2024-05-09</td>
+                            <td>14:15</td>
+                            <td>José</td>
+                            <td>Sala de Espera</td>
+                            <td>Desmaio na sala de espera</td>
+                            <td>Média</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section id="History" class="tabcontent">
+                <h2>Histórico de Transportes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Paciente</th>
+                            <th>Status</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Histórico de transportes é preenchido dinamicamente -->
+                    </tbody>
+                </table>
+            </section>
+            <section id="AllRequests" class="tabcontent">
+                <h2>Todas as Solicitações</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data da Solicitação</th>
+                            <th>Nome do Paciente</th>
+                            <th>Localização Atual</th>
+                            <th>Destino</th>
+                            <th>Horário Desejado</th>
+                            <th>Status</th>
+                            <th>Informações Adicionais</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requests-list">
+                        <!-- Os itens da lista de solicitações são preenchidos dinamicamente -->
+                        <tr>
+                            <td>2024-05-12</td>
+                            <td>João Silva</td>
+                            <td>Quarto 101</td>
+                            <td>Sala de Raio-X</td>
+                            <td>2024-05-12 14:00</td>
+                            <td>Aguardando</td>
+                            <td>Necessita de maca especial</td>
+                        </tr>
+                        <tr>
+                            <td>2024-05-12</td>
+                            <td>Ana Souza</td>
+                            <td>Quarto 202</td>
+                            <td>Sala de Cirurgia</td>
+                            <td>2024-05-12 15:00</td>
+                            <td>Em Transporte</td>
+                            <td>Nenhuma</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <footer>
+        <p>© 2024 Hospital Network</p>
+    </footer>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.querySelectorAll(".tabcontent");
+            tabcontent.forEach(function(node) {
+                node.classList.remove("active");
+            });
+            tablinks = document.querySelectorAll(".tablink");
+            tablinks.forEach(function(node) {
+                node.classList.remove("active");
+            });
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function submitRequest(event) {
+            event.preventDefault();
+            var formData = new FormData(document.getElementById('transport-form'));
+            var jsonData = {};
+            formData.forEach(function(value, key){
+                jsonData[key] = value;
+            });
+            console.log(jsonData);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+/*===== VARIABLES CSS =====*/
+:root {
+    --header-height: 3rem;
+    --nav-width: 80px;
+  
+    /*===== Colors =====*/
+    --first-color: #1E90FF;
+    --first-color-light: #AFA5D9;
+    --white-color: #F7F6FB;
+  
+    /*===== Font and typography =====*/
+  
+    --normal-font-size: 1 rem;
+  
+    /*===== z index =====*/
+    --z-fixed: 100;
+  }
+  
+  /*===== BASE =====*/
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  body {
+    position: relative;
+    padding: 0 1rem;
+    font-size: var(--normal-font-size);
+    transition: .5s;
+    background-color: #e2ebf4;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  /*===== HEADER =====*/
+  .custom-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: var(--z-fixed);
+    transition: .5s;
+    position: fixed;
+  }
+  
+  .custom-header__toggle {
+    color: var(--first-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .custom-header__img {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .custom-header__img img {
+    width: 40px;
+  }
+  
+  /*===== NAV =====*/
+  .custom-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 85px;
+    background: #1E90FF;
+    padding: 6px 14px;
+    z-index: 101;
+    transition: all 0.5s ease;
+  }
+  
+  .custom-sidebar ol,
+  ul {
+    padding-left: 0;
+  }
+  
+  .custom-sidebar hr {
+    color: white;
+    opacity: 1;
+  }
+  
+  .custom-sidebar .custom-logo-details {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .custom-sidebar .custom-logo-details .custom-icon {
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+  
+  .custom-sidebar .custom-logo-details .custom-logo_name {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    opacity: 1;
+    transition: all 0.5s ease;
+    margin-left: 15px;
+    overflow: hidden;
+  }
+  
+  .custom-sidebar.open .custom-logo-details .custom-icon,
+  .custom-sidebar.open .custom-logo-details .custom-logo_name {
+    opacity: 1;
+  }
+  
+  .custom-sidebar i {
+    color: #fff;
+    height: 60px;
+    min-width: 50px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+  }
+  
+  .custom-sidebar .custom-nav-list {
+    margin-top: 20px;
+    height: 100%;
+  }
+  
+  .custom-sidebar li {
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+  }
+  
+  .custom-sidebar li .custom-tooltip {
+    position: absolute;
+    top: -20px;
+    left: calc(100% + 15px);
+    z-index: 3;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: 0s;
+  }
+  
+  .custom-sidebar li:hover .custom-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s ease;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .custom-sidebar.open li .custom-tooltip {
+    display: none;
+  }
+  
+  .custom-sidebar li a {
+    display: flex;
+    height: 100%;
+    width: 93%;
+    align-items: center;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    background: #1E90FF;
+  }
+  
+  .custom-sidebar li a:hover {
+    background: #02396f;
+  }
+  
+  .custom-sidebar li a .custom-links_name {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 1;
+    pointer-events: none;
+    transition: 0.4s;
+    margin-left: 15px;
+    overflow: hidden;
+  }
+  
+  .custom-sidebar li a:hover .custom-links_name,
+  .custom-sidebar li a:hover i {
+    transition: all 0.5s ease;
+    color: #fff;
+  }
+  
+  .custom-sidebar li i {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+  
+  .custom-sidebar li.custom-profile {
+    position: fixed;
+    height: 60px;
+    width: 78px;
+    left: 0;
+    bottom: -8px;
+    padding: 10px 14px;
+    transition: all 0.5s ease;
+  }
+  
+  .custom-sidebar.open {
+    width: 230px;
+  }
+  
+  .custom-sidebar.open li.custom-profile {
+    width: 230px;
+  }
