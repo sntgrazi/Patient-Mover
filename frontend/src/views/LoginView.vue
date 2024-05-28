@@ -36,7 +36,10 @@
   
 <script>
 
+import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 import apiService from '../services/apiService.js';
+import authService from '@/services/authService.js';
 
 export default {
   data() {
@@ -45,13 +48,40 @@ export default {
       senha: "",
     };
   },
+  setup(){
+    const router = useRouter();
+    return { router }; 
+  },  
   methods: {
     realizarLogin() {
       apiService.login({ email: this.email, password: this.senha})
       .then(response => {
-        console.log('Logn realizado com sucesso!', response)
+
+        authService.setToken(response.data.access_token);
+        console.log('Login successful:', response.data.access_token);
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+         
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Login realizado com sucesso!"
+        });
+
+        setTimeout(() => {
+            this.router.push({ name: 'home' });
+          }, 2000);
       }).catch(error => {
-        console.log('Erro ao realizar login!', error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao realizar login!',
+          text: error.response.data.message,
+        });
       });
     },
   },

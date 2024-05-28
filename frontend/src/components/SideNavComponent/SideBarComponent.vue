@@ -39,7 +39,7 @@ export default {
     return {
       activeItem: null,
       menuItems: [
-        { text: "Home", icon: "fa-house", link: "/" },
+        { text: "Home", icon: "fa-house", link: "/home" },
         { text: "Solicitar Transporte", icon: "fa-circle-plus", link: "/solicitar-transporte" },
         { text: "Incidentes", icon: "fa-triangle-exclamation", link: "/incidentes" },
         { text: "Todos os transportes", icon: "fa-list", link: "/todas-solicitacoes" },

@@ -5,26 +5,71 @@
         <i class="fa-solid fa-bars"></i>
       </button>
       <span class="user-name">{{ user.name }}</span>
-      <img :src="user.profilePicture" alt="Profile Picture" class="profile-picture" />
+      <img
+        :src="user.profilePicture"
+        alt="Profile Picture"
+        class="profile-picture"
+        @click="toggleDropdown"
+      />
+      <div v-if="showDropdown" class="dropdown-menu">
+        <ul>
+          <li><a href="#" @click="goToProfile">Meu perfil</a></li>
+          <li><a href="#" @click="logout">Sair</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>
-
 <script>
+import Swal from "sweetalert2";
+import authService from "@/services/authService";
+
 export default {
   name: "NavBarComponent",
   data() {
     return {
       user: {
         name: "John Doe",
-        profilePicture: "https://via.placeholder.com/50" // Substitua pela URL da foto do perfil do usuário
-      }
+        profilePicture: "https://via.placeholder.com/50",
+      },
+      showDropdown: false,
     };
-  }
+  },
+  methods: {
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
+    goToProfile() {
+      this.$router.push("/meu-perfil");
+    },
+    logout() {
+      // Adicionando SweetAlert para confirmar o logout
+      Swal.fire({
+        title: "Tem certeza?",
+        text: "Você deseja sair da sua conta?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim, sair!",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+        
+          authService.logout();
+          
+          this.$router.push("/");
+       
+          Swal.fire("Deslogado!", "Você foi deslogado com sucesso.", "success");
+        }
+      });
+    },
+  },
 };
 </script>
 
-<style scoped>
+
+<style >
 .navbar {
   display: flex;
   align-items: center;
@@ -36,6 +81,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
 }
 
 .profile-picture {
@@ -43,6 +89,37 @@ export default {
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 0;
+  width: 150px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li a {
+  display: block;
+  color: #333;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f1f1f1;
 }
 
 .user-name {
@@ -67,3 +144,5 @@ export default {
   }
 }
 </style>
+
+
