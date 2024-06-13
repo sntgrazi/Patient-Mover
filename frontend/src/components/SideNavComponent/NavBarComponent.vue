@@ -4,14 +4,14 @@
       <button class="menu-button" @click="$emit('toggleSidebar')">
         <i class="fa-solid fa-bars"></i>
       </button>
-      <span class="user-name">{{ user.name }}</span>
+      <span class="user-name">{{ user.nome }}</span>
       <img
         :src="user.profilePicture"
         alt="Profile Picture"
         class="profile-picture"
         @click="toggleDropdown"
       />
-      <div v-if="showDropdown" class="dropdown-menu">
+      <div v-if="showDropdown" class="custom-dropdown-menu">
         <ul>
           <li><a href="#" @click="goToProfile">Meu perfil</a></li>
           <li><a href="#" @click="logout">Sair</a></li>
@@ -20,6 +20,7 @@
     </div>
   </nav>
 </template>
+
 <script>
 import Swal from "sweetalert2";
 import authService from "@/services/authService";
@@ -29,7 +30,7 @@ export default {
   data() {
     return {
       user: {
-        name: "John Doe",
+        nome: localStorage.getItem("userNome") || "Usuário",
         profilePicture: "https://via.placeholder.com/50",
       },
       showDropdown: false,
@@ -43,7 +44,6 @@ export default {
       this.$router.push("/meu-perfil");
     },
     logout() {
-      // Adicionando SweetAlert para confirmar o logout
       Swal.fire({
         title: "Tem certeza?",
         text: "Você deseja sair da sua conta?",
@@ -55,11 +55,13 @@ export default {
         cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.isConfirmed) {
-        
           authService.logout();
-          
+          localStorage.removeItem("userNome");
+          localStorage.removeItem("userRole");
+          localStorage.removeItem("userId");
+
           this.$router.push("/");
-       
+
           Swal.fire("Deslogado!", "Você foi deslogado com sucesso.", "success");
         }
       });
@@ -68,12 +70,11 @@ export default {
 };
 </script>
 
-
-<style >
+<style>
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   padding: 20px;
 }
 
@@ -92,7 +93,7 @@ export default {
   cursor: pointer;
 }
 
-.dropdown-menu {
+.custom-dropdown-menu {
   position: absolute;
   right: 0;
   top: 60px;
@@ -105,32 +106,32 @@ export default {
   z-index: 1000;
 }
 
-.dropdown-menu ul {
+.custom-dropdown-menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.dropdown-menu li a {
+.custom-dropdown-menu li a {
   display: block;
   color: #333;
   padding: 10px 20px;
   text-decoration: none;
 }
 
-.dropdown-menu li a:hover {
+.custom-dropdown-menu li a:hover {
   background-color: #f1f1f1;
 }
 
 .user-name {
   font-size: 18px;
-  color: #fff; /* Cor do texto */
+  color: #ffffff; /* Cor do texto */
 }
 
 .menu-button {
   display: none;
   background-color: transparent;
-  color: #fff;
+  color: #fdfdfd;
   border: none;
   padding: 10px;
   font-size: 24px;
@@ -144,5 +145,3 @@ export default {
   }
 }
 </style>
-
-

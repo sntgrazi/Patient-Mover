@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('incidentes', function (Blueprint $table) {
+        Schema::create('locais_transporte', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('solicitacao_id')->constrained('solicitacoes_de_transporte');
-            $table->text('descricao');
-            $table->timestamps();
+            $table->string('nomeLocal');
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incidentes');
+        Schema::dropIfExists('locais_transporte');
     }
 };

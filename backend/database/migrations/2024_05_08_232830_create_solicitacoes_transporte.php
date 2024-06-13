@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('solicitacoes_de_transporte', function (Blueprint $table) {
+        Schema::create('solicitacoes_transporte', function (Blueprint $table) {
             $table->id();
             $table->foreignId('paciente_id')->constrained('pacientes');
-            $table->string('origem');
-            $table->string('destino');
+            $table->foreignId('origem')->constrained("locais_transporte");
+            $table->foreignIdclear('destino')->constrained("locais_transporte");
             $table->enum('prioridade', ['baixa', 'media', 'alta']);
-            $table->enum('status', ['pendente', 'em_andamento', 'concluido']);
+            $table->enum('status', ['pendente', 'em_andamento', 'concluido'])->default('pendente');
             $table->foreignId('maqueiro_id')->nullable()->constrained('usuarios');
             $table->date('data');
             $table->time('hora'); 
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicitacoes_de_transporte');
+        Schema::dropIfExists('solicitacoes_transporte');
     }
 };

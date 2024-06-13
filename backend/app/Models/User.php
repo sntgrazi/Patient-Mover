@@ -20,7 +20,13 @@ class User extends Authenticatable implements JWTSubject
         'nome',
         'email',
         'password',
-        'role'
+        'role',
+        'status',
+        'password_reset_required',
+    ];
+
+    protected $casts = [
+        'password_reset_required' => 'boolean',
     ];
    
     protected $hidden = [

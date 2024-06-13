@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('historico_de_transporte', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('solicitacao_id')->constrained('solicitacoes_transporte');
-            $table->timestamp('momento');
-            $table->timestamps();
+        Schema::table('usuarios', function (Blueprint $table) {
+            $table->boolean('password_reset_required')->default(false);
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historico_de_transporte');
+        Schema::table('usuarios', function (Blueprint $table) {
+            $table->dropColumn('password_reset_required');
+        });
     }
 };

@@ -1,14 +1,19 @@
 <template>
-  <div id="app" class="container">
+  <div id="app" class="custom-container">
     <Sidebar
       v-if="!isLoginRoute"
       :isSidebarHidden="isSidebarHidden"
       @update:isSidebarHidden="handleSidebarVisibility"
     />
-    <div v-if="!isLoginRoute" class="overlay" v-show="!isSidebarHidden" @click="toggleSidebar"></div>
-    <div class="main-content">
+    <div
+      v-if="!isLoginRoute"
+      class="custom-overlay"
+      v-show="!isSidebarHidden"
+      @click="toggleSidebar"
+    ></div>
+    <div class="custom-main-content">
       <NavBarComponent v-if="!isLoginRoute" @toggleSidebar="toggleSidebar" />
-      <div class="content">
+      <div class="custom-content">
         <RouterView />
       </div>
     </div>
@@ -16,8 +21,8 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import Sidebar from "./components/SideNavComponent/SideBarComponent.vue";
 import NavBarComponent from "./components/SideNavComponent/NavBarComponent.vue";
 
@@ -29,8 +34,8 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const isLoginRoute = computed(() => route.path === '/');
-    
+    const isLoginRoute = computed(() => route.path === "/");
+
     return {
       isLoginRoute,
     };
@@ -43,7 +48,7 @@ export default {
   mounted() {
     window.addEventListener("resize", this.handleResize);
   },
-  beforeUnmount() { // Atualizado para Vue 3
+  beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
   },
   methods: {
@@ -69,36 +74,36 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
-.container {
+.custom-container {
   display: flex;
   width: 100%;
 }
 
-.main-content {
+.custom-main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
 }
 
-.content {
+.custom-content {
   padding: 20px;
   flex-grow: 1;
 }
 
 @media (max-width: 1200px) {
-  .main-content {
+  .custom-main-content {
     margin-left: 0;
     width: 100%;
   }
 
-  .overlay {
+  .custom-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -110,13 +115,13 @@ body {
 }
 
 @media (max-width: 768px) {
-  .content {
+  .custom-content {
     padding: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .content {
+  .custom-content {
     padding: 5px;
   }
 }

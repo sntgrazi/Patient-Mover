@@ -1,14 +1,14 @@
 <template>
-  <div class="card">
-    <div class="card-conteudo">
-      <div class="card-content">
+  <div class="custom-card">
+    <div class="custom-card-conteudo">
+      <div class="custom-card-content">
         <span>{{ quantity }}</span>
       </div>
-      <div class="card-title">
+      <div class="custom-card-title">
         <span>{{ title }}</span>
       </div>
     </div>
-    <div class="card-icon">
+    <div class="custom-card-icon">
       <span><i :class="`fa-solid ${icon}`"></i></span>
     </div>
   </div>
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style>
-.card {
+.custom-card {
   margin-top: 20px;
   width: 100%;
   padding: 20px;
@@ -47,23 +47,23 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-conteudo {
+.custom-card-conteudo {
   flex-grow: 1;
   color: #000;
   padding: 10px;
 }
 
-.card-content {
+.custom-card-content {
   font-size: 26px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.card-title {
+.custom-card-title {
   font-size: 16px;
 }
 
-.card-icon {
+.custom-card-icon {
   font-size: 50px;
   color: #040745;
   display: flex;

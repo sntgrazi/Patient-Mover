@@ -15,7 +15,6 @@
       <div class="info">
         <div class="titulo-e-botao">
           <div class="titulo">Emergências de Transporte</div>
-          <button class="ver-tudo" @click="handleVerTudo">Ver Tudo</button>
         </div>
         <Tabela :colunas="colunas" :dados="dados" />
       </div>
@@ -23,7 +22,6 @@
       <div class="teste">
         <div class="titulo-e-botao">
           <div class="titulo">Incidentes p/dia</div>
-          <button class="ver-tudo" @click="handleVerTudo">Ver Tudo</button>
         </div>
         <Chart />
       </div>
@@ -43,7 +41,7 @@ export default {
       colunas: ["ID", "Paciente", "Prioridade"],
       dados: [
         { ID: 1, Paciente: "João Silva", Prioridade: "Baixa" },
-        { ID: 2, Paciente: "Maria Souza", Prioridade: "Média" },
+        { ID: 2, Paciente: "Maria Souza", Prioridade: "Media" },
         { ID: 3, Paciente: "Carlos Lima", Prioridade: "Alta" },
         // Adicione mais dados conforme necessário
       ],
@@ -55,9 +53,7 @@ export default {
     Tabela,
   },
   methods: {
-    handleVerTudo() {
-      alert("Mais detalhes sobre transporte!");
-    },
+   
   },
 };
 </script>
@@ -68,11 +64,10 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
 }
 
 .titulo-pag {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   align-self: flex-start;
   color: white;
@@ -85,6 +80,7 @@ export default {
   flex-direction: row;
   gap: 65px;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .informacoes {
@@ -124,9 +120,9 @@ export default {
 .titulo-e-botao {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  padding: 10px 20px;
+  padding: 20px 20px;
   box-sizing: border-box;
 }
 
@@ -135,19 +131,13 @@ export default {
   font-size: 20px;
 }
 
-.ver-tudo {
-  background-color: #0670ac;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+
+@media (max-width: 1700px){
+  .info, .teste{
+    height: 55vh;
+  }
 }
 
-.ver-tudo:hover {
-  background-color: #005999;
-}
 
 @media (max-width: 1024px) {
   .cards {

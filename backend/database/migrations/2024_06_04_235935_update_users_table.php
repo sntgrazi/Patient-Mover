@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class UpdateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('historico_de_transporte', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('solicitacao_id')->constrained('solicitacoes_transporte');
-            $table->timestamp('momento');
-            $table->timestamps();
+        Schema::table('usuarios', function (Blueprint $table) {
+            $table->string('role'); 
+            $table->string('status')->default('Ativo'); 
         });
     }
 
@@ -28,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historico_de_transporte');
+        Schema::table('usuarios', function (Blueprint $table) {
+            $table->dropColumn('role');
+            $table->dropColumn('status');
+        });
     }
-};
+}

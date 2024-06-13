@@ -11,20 +11,12 @@ class Incidentes extends Model
 {
     use HasFactory;
 
-    protected $table = 'incidentes';
-
-    protected $fillable = [
-        'solicitacao_transporte_id',
-        'tipo',
-        'descricao',
-        'data_hora',
-        'registrado_por'
-    ];
+    
 
  
     public function solicitacaoTransporte()
     {
-        return $this->belongsTo(SolicitarTransporte::class, 'solicitacao_transporte_id');
+        return $this->belongsTo(SolicitarTransporte::class, 'solicitacao_transporte_id')->with('paciente');
     }
 
   
@@ -33,5 +25,5 @@ class Incidentes extends Model
         return $this->belongsTo(User::class, 'registrado_por');
     }
 
- 
+
 }

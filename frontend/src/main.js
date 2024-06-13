@@ -4,8 +4,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
+import 'vue-select/dist/vue-select.css';
+import vSelect from 'vue-select'
 
-app.use(router)
+createApp(App)
+  .use(router)
+  .component('v-select', vSelect)
+  .mount('#app')
 
-app.mount('#app')

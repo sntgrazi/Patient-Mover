@@ -10,7 +10,7 @@
       </div>
       <ul>
         <li
-          v-for="item in menuItems"
+          v-for="item in filteredMenuItems"
           :key="item.text"
           @click="setActive(item.text)"
         >
@@ -39,12 +39,52 @@ export default {
     return {
       activeItem: null,
       menuItems: [
-        { text: "Home", icon: "fa-house", link: "/home" },
-        { text: "Solicitar Transporte", icon: "fa-circle-plus", link: "/solicitar-transporte" },
-        { text: "Incidentes", icon: "fa-triangle-exclamation", link: "/incidentes" },
-        { text: "Todos os transportes", icon: "fa-list", link: "/todas-solicitacoes" },
+        { text: "Home", icon: "fa-house", link: "/home", roles: ["admin"] },
+        {
+          text: "Solicitar Transporte",
+          icon: "fa-circle-plus",
+          link: "/solicitar-transporte",
+          roles: ["admin"],
+        },
+        {
+          text: "Todos os transportes",
+          icon: "fa-list",
+          link: "/todas-solicitacoes",
+          roles: ["admin"],
+        },
+        // {
+        //   text: "Incidentes",
+        //   icon: "fa-triangle-exclamation",
+        //   link: "/incidentes",
+        //   roles: ["admin"],
+        // },
+        
+        {
+          text: "Maqueiros",
+          icon: "fa-user-nurse",
+          link: "/maqueiros",
+          roles: ["admin"],
+        },
+        {
+          text: "Transportes Disponíveis",
+          icon: "fa-truck-medical",
+          link: "/maqueiro-transporte",
+          roles: ["maqueiro"],
+        },
+        {
+          text: "Histórico",
+          icon: "fa-truck-medical",
+          link: "/historico-transporte",
+          roles: ["maqueiro"],
+        },
       ],
     };
+  },
+  computed: {
+    filteredMenuItems() {
+      const userRole = localStorage.getItem("userRole");
+      return this.menuItems.filter((item) => item.roles.includes(userRole));
+    },
   },
   methods: {
     setActive(item) {

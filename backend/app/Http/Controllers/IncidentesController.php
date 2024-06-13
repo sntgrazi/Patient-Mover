@@ -10,7 +10,8 @@ class IncidentesController extends Controller
     
     public function index()
     {
-        return Incidentes::all();
+        $incidentes = Incidentes::with(['solicitacaoTransporte', 'registradoPor'])->get();
+        return $incidentes;
     }
 
     public function store(Request $request)
