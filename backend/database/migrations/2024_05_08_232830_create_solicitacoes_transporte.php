@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('paciente_id')->constrained('pacientes');
             $table->foreignId('origem')->constrained("locais_transporte");
-            $table->foreignIdclear('destino')->constrained("locais_transporte");
+            $table->foreignId('destino')->constrained("locais_transporte");
             $table->enum('prioridade', ['baixa', 'media', 'alta']);
             $table->enum('status', ['pendente', 'em_andamento', 'concluido'])->default('pendente');
             $table->foreignId('maqueiro_id')->nullable()->constrained('usuarios');
