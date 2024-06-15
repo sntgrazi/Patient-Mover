@@ -4,6 +4,11 @@
 
 O Patient Mover foi desenvolvido para otimizar e gerenciar o processo de transporte de pacientes dentro do hospital. O sistema possui duas interfaces principais: uma para administradores e outra para maqueiros, permitindo uma gestão eficiente e transparente dos transportes.
 
+## Links Importantes
+
+- **Deploy do Sistema:** <a href="https://patient-mover.vercel.app/" target="_blank">Patient Mover</a>
+- **Manual do Usuário:** <a href="https://drive.google.com/file/d/18QPZK-XKLEtNUhF2bNAcXFahJoPF6iy-/view?usp=sharing" target="_blank">Link para o Manual do Usuário</a>
+
 ## Tecnologias Utilizadas
 
 - **Frontend:** Vue.js
@@ -114,11 +119,6 @@ O Patient Mover foi desenvolvido para otimizar e gerenciar o processo de transpo
 2. Acesse o dashboard para visualizar os transportes atribuídos a você.
 3. Aceite, recuse, inicie e conclua transportes conforme necessário.
 4. Registre incidentes se necessário.
-
-## Links Importantes
-
-- **Deploy do Sistema:** [Patient Mover](https://patient-mover.vercel.app/)
-- **Manual do Usuário:** [Link para o Manual do Usuário](https://drive.google.com/file/d/18QPZK-XKLEtNUhF2bNAcXFahJoPF6iy-/view?usp=sharing)
 
 ## Contribuição
 
