@@ -46,3 +46,7 @@ Route::get('locais', [LocaisController::class, 'index']);
 Route::post('/solicitacoes/{id}/incidente', [IncidentesController::class, 'store']);
 Route::get('/solicitacoes/{id}/incidentes', [IncidentesController::class, 'index']);
 Route::get('incidentes', [IncidentesController::class, 'indexAll']);
+
+Route::get('/status', function () {
+    return response()->json(['status' => 'API is running']);
+});
