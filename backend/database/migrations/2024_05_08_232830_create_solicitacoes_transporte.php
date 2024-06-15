@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('origem')->constrained("locais_transporte");
             $table->foreignId('destino')->constrained("locais_transporte");
             $table->enum('prioridade', ['baixa', 'media', 'alta']);
-            $table->enum('status', ['pendente', 'em_andamento', 'concluido'])->default('pendente');
+            $table->enum('status', ['pendente', 'em_transporte', 'concluido'])->default('pendente');
             $table->foreignId('maqueiro_id')->nullable()->constrained('usuarios');
             $table->date('data');
             $table->time('hora'); 
