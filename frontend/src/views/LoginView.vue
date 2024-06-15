@@ -185,11 +185,9 @@ export default {
             });
 
             setTimeout(() => {
-              if(localStorage.getItem("userRole") === "admin"){
+              
                 this.router.push({ name: "home" });
-              } else {
-                this.router.push({ name: "maqueiroTransporte"})
-              }
+             
              
             }, 2000);
           }

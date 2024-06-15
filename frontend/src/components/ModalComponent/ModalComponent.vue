@@ -23,7 +23,9 @@ export default {
 };
 </script>
   
-  <style scoped>
+<style scoped>
+
+  
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -40,10 +42,12 @@ export default {
 .modal-content {
   background-color: white;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 80%;
-  max-width: 500px;
+  max-width: 800px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .modal-header {
@@ -51,10 +55,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.modal-body {
-  margin-top: 20px;
 }
 
 button {

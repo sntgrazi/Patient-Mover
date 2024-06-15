@@ -39,7 +39,7 @@ export default {
     return {
       activeItem: null,
       menuItems: [
-        { text: "Home", icon: "fa-house", link: "/home", roles: ["admin"] },
+        { text: "Home", icon: "fa-house", link: "/home", roles: ["admin","maqueiro"] },
         {
           text: "Solicitar Transporte",
           icon: "fa-circle-plus",
@@ -69,12 +69,6 @@ export default {
           text: "Transportes Disponíveis",
           icon: "fa-truck-medical",
           link: "/maqueiro-transporte",
-          roles: ["maqueiro"],
-        },
-        {
-          text: "Histórico",
-          icon: "fa-truck-medical",
-          link: "/historico-transporte",
           roles: ["maqueiro"],
         },
       ],

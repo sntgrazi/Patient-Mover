@@ -12,7 +12,11 @@ class Incidentes extends Model
     use HasFactory;
 
     
-
+    protected $fillable = [
+        "solicitacao_transporte_id",
+        "descricao",
+        "registrado_por",
+    ];
  
     public function solicitacaoTransporte()
     {

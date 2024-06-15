@@ -26,7 +26,11 @@
       </table>
     </div>
     <div v-else class="tableWrapper">
+      <div v-if="maqueiros.length === 0" class="no-data-message">
+        Não há registros no momento
+      </div>
       <Tabela
+        v-else
         :colunas="colunas"
         :dados="maqueiros"
         :acoes="acoes"
@@ -105,21 +109,21 @@ export default {
           action: "inativar",
           contexto: "ativo",
           icone: "fa-solid fa-user-minus",
-          class: "acao-button"
+          class: "acao-button",
         },
         {
           texto: "Ativar",
           action: "ativar",
           contexto: "inativo",
           icone: "fa-solid fa-user-check",
-          class: "acao-button"
+          class: "acao-button",
         },
         {
           texto: "Editar",
           action: "editar",
           contexto: "todos",
           icone: "fa-solid fa-pen-to-square",
-          class: "acao-button"
+          class: "acao-button",
         },
       ],
     };
@@ -315,7 +319,20 @@ export default {
 };
 </script>
 
+
 <style scoped>
+
+.no-data-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: #6c757d;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
 .maqueiros {
   display: flex;
   flex-direction: column;
@@ -433,37 +450,30 @@ input[type="password"]:focus {
   width: 100%;
 }
 
-.bar {
-  background-color: #e7e7e7;
-  height: 14px;
-  border-radius: 5px;
-  width: 80%;
+.table th,
+.table td {
+  color: #8a8b8b;
+  text-align: center;
+  padding: 0.8rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
-.bar:after {
-  position: absolute;
-  content: "";
-  display: block;
-  width: 100%;
-  height: 24px;
-  background-image: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0.5) 60%,
-    rgba(255, 255, 255, 0) 80%
-  );
-  background-size: 200px 24px;
-  background-position: -100px 0;
-  background-repeat: no-repeat;
-  animation: loading 1s infinite;
+.skeleton-row .loading-container {
+  height: 20px;
+  background-color: #f1f3f5;
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 4px;
 }
 
-@keyframes loading {
-  40% {
-    background-position: 100% 0;
+@keyframes pulse {
+  0% {
+    background-color: #f1f3f5;
+  }
+  50% {
+    background-color: #e9ecef;
   }
   100% {
-    background-position: 100% 0;
+    background-color: #f1f3f5;
   }
 }
 

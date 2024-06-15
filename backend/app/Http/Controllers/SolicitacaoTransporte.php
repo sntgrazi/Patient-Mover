@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\TransporteRecusa;
 use Illuminate\Http\Request;
 use App\Models\SolicitarTransporte;
+use App\Models\HistoricoTransporte;
 
 class SolicitacaoTransporte extends Controller
 {
-    
     public function index()
     {
         $solicitacoes = SolicitarTransporte::with(['paciente', 'origem', 'destino'])->get();
         return $solicitacoes;
-        
     }
 
     public function store(Request $request)
     {
         $solicitacao = SolicitarTransporte::create($request->all());
+        $this->registrarHistorico($solicitacao->id, 'Transporte Pendente');
         return response()->json($solicitacao, 201);
     }
 
@@ -29,6 +29,7 @@ class SolicitacaoTransporte extends Controller
             return response()->json(['message' => 'Solicitação não encontrada'], 404);
         }
         $solicitacao->update($request->all());
+        $this->registrarHistorico($id, 'Solicitação atualizada');
         return response()->json($solicitacao, 200);
     }
 
@@ -39,9 +40,10 @@ class SolicitacaoTransporte extends Controller
             return response()->json(['message' => 'Solicitação não encontrada'], 404);
         }
         $solicitacao->delete();
+        $this->registrarHistorico($id, 'Solicitação excluída');
     }
 
-      public function aceitarTransporte(Request $request, $id)
+    public function aceitarTransporte(Request $request, $id)
     {
         $solicitacao = SolicitarTransporte::find($id);
         if (!$solicitacao) {
@@ -49,11 +51,13 @@ class SolicitacaoTransporte extends Controller
         }
 
         $solicitacao->maqueiro_id = $request->maqueiro_id; 
+        $solicitacao->status = 'Pendente';
         $solicitacao->save();
+
+        $this->registrarHistorico($id, 'Transporte aceito');
 
         return response()->json(['message' => 'Transporte aceito', 'solicitacao' => $solicitacao], 200);
     }
-
 
     public function getSolicitacoesDisponiveis(Request $request, $id)
     {
@@ -68,17 +72,18 @@ class SolicitacaoTransporte extends Controller
         return response()->json($solicitacoes);
     }
 
-    public function recusarTransporte(Request $request, $id, )
+    public function recusarTransporte(Request $request, $id)
     {
         $solicitacao = SolicitarTransporte::findOrFail($id);
 
-        // Registrar a recusa
+        
         TransporteRecusa::create([
             'transporte_id' => $solicitacao->id,
             'maqueiro_id' => $request->maqueiroId,
         ]);
 
-        // Retornar uma resposta apropriada
+
+       
         return response()->json([
             'message' => 'Solicitação de transporte recusada com sucesso.',
         ]);
@@ -90,4 +95,45 @@ class SolicitacaoTransporte extends Controller
         return response()->json($solicitacoes, 200);
     }
 
+    public function iniciarTransporte(Request $request, $id)
+    {
+        $solicitacao = SolicitarTransporte::findOrFail($id);
+        $solicitacao->status = 'em_transporte';
+        $solicitacao->save();
+
+        $this->registrarHistorico($id, 'Transporte iniciado');
+
+        return response()->json([
+            'message' => 'Transporte iniciado com sucesso.',
+            'solicitacao' => $solicitacao,
+        ]);
+    }
+
+    public function concluirTransporte(Request $request, $id)
+    {
+        $solicitacao = SolicitarTransporte::findOrFail($id);
+        $solicitacao->status = 'concluido';
+        $solicitacao->save();
+
+        $this->registrarHistorico($id, 'Transporte concluído');
+
+        return response()->json([
+            'message' => 'Transporte concluído com sucesso.',
+            'solicitacao' => $solicitacao,
+        ]);
+    }
+
+    private function registrarHistorico($solicitacaoId, $momento)
+    {
+        HistoricoTransporte::create([
+            'solicitacao_id' => $solicitacaoId,
+            'momento' => $momento,
+        ]);
+    }
+
+    public function historicoTransporte($id)
+    {
+        $historico = HistoricoTransporte::where('solicitacao_id', $id)->get();
+        return response()->json($historico);
+    }
 }

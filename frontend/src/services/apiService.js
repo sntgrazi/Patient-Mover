@@ -30,7 +30,7 @@ export default {
     async getTransportesDisponiveis(id) {
         return await apiService.get(`/transportes/${id}/disponiveis`);
     },
-    async getIncidentes() {
+    async getIncidentesTotal() {
         return await apiService.get('/incidentes');
     },
 
@@ -81,6 +81,31 @@ export default {
             maqueiroId: maqueiroiId
         });
         return response.data;
+    },
+
+    async iniciarTransporte(transporteId) {
+        const response = await apiService.post(`/solicitacoes/${transporteId}/iniciar`);
+        return response.data;
+    },
+
+    async finalizarTransporte(transporteId) {
+        const response = await apiService.post(`/solicitacoes/${transporteId}/concluir`);
+        return response.data;
+    },
+
+    async getHistoricoTransporte(transporteId) {
+        return await apiService.get(`/historico_transporte/${transporteId}`);
+    },
+
+    async relatarIncidente(id, incidente, maqueiroId) {
+        return await apiService.post(`/solicitacoes/${id}/incidente`, {
+            descricao: incidente,
+            maqueiroId: maqueiroId
+        });
+    },
+
+    async getIncidentes(id){
+        return await apiService.get(`/solicitacoes/${id}/incidentes`);
     }
 
 };

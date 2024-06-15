@@ -4,7 +4,12 @@
     <div class="tableInfo">
       <div class="header">
         <div class="filters">
-          <input type="text" v-model="search" placeholder="Pesquisar..." class="search" />
+          <input
+            type="text"
+            v-model="search"
+            placeholder="Pesquisar..."
+            class="search"
+          />
           <select v-model="statusFilter">
             <option value="">Todos os status</option>
             <option value="pendente">Pendente</option>
@@ -39,7 +44,14 @@
         </table>
       </div>
       <div v-else class="tableWrapper">
+        <div
+              v-if="filteredTransportes.length === 0"
+              class="no-data-message"
+            >
+              Não há transportes no momento
+            </div>
         <Tabela
+        v-else
           :colunas="colunas"
           :dados="filteredTransportes"
           @linha-clicada="abrirModal"
@@ -53,11 +65,54 @@
       </template>
       <template v-slot:body>
         <div class="modal-content">
+          <!-- Transporte Details List -->
           <ul class="modal-list">
-            <li v-for="(value, key) in transporteSelecionado" :key="key" class="modal-list-item">
-              <strong>{{ formatKey(key) }}:</strong> {{ value }}
+            <li
+              v-for="(value, key) in transporteSelecionado"
+              :key="key"
+              class="modal-list-item"
+            >
+              <strong>{{ formatKey(key) }}:</strong> <span>{{ value }}</span>
             </li>
           </ul>
+
+          <!-- Incident Reports -->
+          <div class="incident-reports">
+            <div
+              v-for="incidente in incidentes"
+              :key="incidente.id"
+              class="incident-report"
+            >
+              <strong>Incidente:</strong> {{ incidente.descricao }}
+              <span class="incident-date">{{
+                new Date(incidente.created_at).toLocaleString()
+              }}</span>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="timeline-container">
+            <div class="timeline">
+              <div class="timeline-line"></div>
+              <div
+                v-for="evento in historicoTransporte"
+                :key="evento.id"
+                class="timeline-event"
+              >
+                <div class="timeline-content">
+                  <div class="timeline-icon">
+                    <i class="fa-regular fa-clock"></i>
+                  </div>
+                  <div class="timeline-text">
+                    <span>{{ evento.momento }}</span>
+                    <span class="timeline-date">{{
+                      new Date(evento.created_at).toLocaleString()
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </template>
     </Modal>
@@ -91,19 +146,26 @@ export default {
       skeletonRows: 10,
       modalOpen: false,
       transporteSelecionado: null,
+      historicoTransporte: [],
+      incidentes: [],
     };
   },
   computed: {
     filteredTransportes() {
       return this.dados.filter((transporte) => {
-        const matchesSearch = Object.values(transporte).some((val) => 
-          val && String(val).toLowerCase().includes(this.search.toLowerCase())
+        const matchesSearch = Object.values(transporte).some(
+          (val) =>
+            val && String(val).toLowerCase().includes(this.search.toLowerCase())
         );
         const matchesStatus = this.statusFilter
-          ? transporte.StatusTransporte && transporte.StatusTransporte.toLowerCase() === this.statusFilter.toLowerCase()
+          ? transporte.StatusTransporte &&
+            transporte.StatusTransporte.toLowerCase() ===
+              this.statusFilter.toLowerCase()
           : true;
         const matchesPriority = this.priorityFilter
-          ? transporte.Prioridade && transporte.Prioridade.toLowerCase() === this.priorityFilter.toLowerCase()
+          ? transporte.Prioridade &&
+            transporte.Prioridade.toLowerCase() ===
+              this.priorityFilter.toLowerCase()
           : true;
         return matchesSearch && matchesStatus && matchesPriority;
       });
@@ -111,28 +173,51 @@ export default {
   },
   components: {
     Tabela,
-    Modal
+    Modal,
   },
   mounted() {
     this.getTransportes();
   },
   methods: {
+    async getHistoricoTransporte(transporteId) {
+      
+      try {
+        const response = await apiService.getHistoricoTransporte(transporteId);
+        this.historicoTransporte = response.data;
+      } catch (error) {
+        console.error("Error fetching historico:", error);
+      }
+    },
+    async getIncidentes(transporteId) {
+      try {
+        const response = await apiService.getIncidentes(transporteId);
+        this.incidentes = response.data;
+      } catch (error) {
+        console.error("Error fetching incidentes:", error);
+      }
+    },
     formatKey(key) {
       const formattedKey = {
         "N° do Transporte": "N° do Transporte",
-        "Paciente": "Paciente",
-        "Origem": "Origem",
-        "Destino": "Destino",
-        "Prioridade": "Prioridade",
-        "Data": "Data",
-        "Hora": "Hora",
-        "StatusTransporte": "Status do Transporte"
+        Paciente: "Paciente",
+        Origem: "Origem",
+        Destino: "Destino",
+        Prioridade: "Prioridade",
+        Data: "Data",
+        Hora: "Hora",
+        StatusTransporte: "Status do Transporte",
       };
       return formattedKey[key] || key;
     },
     abrirModal(transporte) {
       this.transporteSelecionado = transporte;
-      this.modalOpen = true;
+      console.log(transporte);
+      this.getIncidentes(transporte["N° do Transporte"]);
+      this.getHistoricoTransporte(transporte["N° do Transporte"]);
+
+      setTimeout(() => {
+        this.modalOpen = true;
+      }, 500);
     },
     fecharModal() {
       this.modalOpen = false;
@@ -156,7 +241,7 @@ export default {
         })
         .join(" ");
     },
-    formatPrioridade(prioridade){
+    formatPrioridade(prioridade) {
       if (!prioridade) return "N/A";
 
       return prioridade
@@ -196,6 +281,141 @@ export default {
 </script>
 
 <style scoped>
+.no-data-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: #6c757d;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.timeline-container {
+  position: relative;
+  margin-top: 20px;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0 20px;
+}
+
+.timeline-event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+  min-width: 150px;
+  text-align: center;
+  background: #fff;
+  border-radius: 4px;
+  z-index: 1;
+  margin: 10px;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-icon {
+  font-size: 24px;
+  color: #28a745;
+  margin-bottom: 5px;
+}
+
+.timeline-text span {
+  display: block;
+  margin: 5px 0;
+}
+
+.timeline-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-list-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-list-item strong {
+  color: #333;
+  font-weight: bold;
+}
+
+.modal-list-item span {
+  color: #555;
+}
+
+.modal-list-item:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.modal-list-item:nth-child(odd) {
+  background-color: #fff;
+}
+
+.modal-list-item:last-child {
+  border-bottom: none;
+}
+
+.incident-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.incident-form span {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.incident-form textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.incident-reports {
+  margin-top: 20px;
+}
+
+.incident-report {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #f9f9f9;
+}
+
+.incident-date {
+  display: block;
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
 .todosTransportes {
   display: flex;
   flex-direction: column;
@@ -242,7 +462,7 @@ export default {
   transition: border-color 0.3s;
 }
 
-.filters input{
+.filters input {
   width: 25%;
 }
 
@@ -272,56 +492,33 @@ export default {
   width: 100%;
 }
 
-.bar {
-  background-color: #e7e7e7;
-  height: 14px;
-  border-radius: 5px;
-  width: 80%;
+.table th,
+.table td {
+  color: #8a8b8b;
+  text-align: center;
+  padding: 0.8rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
-.bar:after {
-  position: absolute;
-  content: "";
-  display: block;
-  width: 100%;
-  height: 24px;
-  background-image: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0.5) 60%,
-    rgba(255, 255, 255, 0) 80%
-  );
-  background-size: 200px 24px;
-  background-position: -100px 0;
-  background-repeat: no-repeat;
-  animation: loading 1s infinite;
+.skeleton-row .loading-container {
+  height: 20px;
+  background-color: #f1f3f5;
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 4px;
 }
 
-@keyframes loading {
-  40% {
-    background-position: 100% 0;
+@keyframes pulse {
+  0% {
+    background-color: #f1f3f5;
+  }
+  50% {
+    background-color: #e9ecef;
   }
   100% {
-    background-position: 100% 0;
+    background-color: #f1f3f5;
   }
 }
 
-.modal-content {
-  padding: 20px;
-}
 
-.modal-list {
-  list-style: none;
-  padding: 0;
-}
 
-.modal-list-item {
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.modal-list-item strong {
-  font-weight: bold;
-  color: #333;
-}
 </style>

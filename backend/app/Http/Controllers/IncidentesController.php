@@ -8,18 +8,30 @@ use App\Models\Incidentes;
 class IncidentesController extends Controller
 {
     
-    public function index()
+    public function index($id)
     {
-        $incidentes = Incidentes::with(['solicitacaoTransporte', 'registradoPor'])->get();
-        return $incidentes;
+        $incidentes = Incidentes::where('solicitacao_transporte_id', $id)->with('registradoPor')->get();
+        return response()->json($incidentes);
     }
 
-    public function store(Request $request)
-    {   
-        $incidentes = Incidentes::create($request->all());
-        return response()->json($incidentes, 201);
+    public function indexAll(){
+        return response()->json(Incidentes::all());
     }
 
+    public function store(Request $request, $id)
+    {
+        $request->validate([
+            'descricao' => 'required|string|max:255',
+        ]);
+
+        $incidente = new Incidentes();
+        $incidente->solicitacao_transporte_id = $id;
+        $incidente->descricao = $request->descricao;
+        $incidente->registrado_por = $request->maqueiroId;
+        $incidente->save();
+
+        return response()->json(['message' => 'Incidente relatado com sucesso', 'incidente' => $incidente], 201);
+    }
     public function show($id)
     {
         return Incidentes::findOrFail($id);
@@ -43,5 +55,6 @@ class IncidentesController extends Controller
         }
         $incidente->delete();
     }
+
 
 }

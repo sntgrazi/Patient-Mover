@@ -11,9 +11,7 @@ return new class extends Migration
         Schema::create('incidentes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('solicitacao_transporte_id')->constrained('solicitacoes_transporte')->onDelete('cascade');
-            $table->string('tipo'); 
             $table->text('descricao');
-            $table->dateTime('data_hora'); 
             $table->foreignId('registrado_por')->constrained('usuarios'); 
             $table->timestamps();
         });
