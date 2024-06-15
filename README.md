@@ -1,75 +1,133 @@
-# Desenvolvimento de Sistema para Maqueiros
-de Hospital Público
+# Patient Mover
 
-## Apresentação:
-O Hospital Geral Clériston Andrade reconhece a importância de aprimorar o
-transporte de pacientes dentro da instituição, visando oferecer um serviço mais
-eficiente e seguro aos usuários. Para atender a essa necessidade, surge a
-demanda por um sistema que possa facilitar e otimizar as atividades dos
-maqueiros, responsáveis pelo transporte dos pacientes.
-Assim, propõe-se a criação de um sistema que seja capaz de integrar-se
-harmoniosamente às operações do hospital, proporcionando uma gestão mais
-eficaz do transporte de pacientes. Ao final da disciplina, o sistema mais
-adequado e eficiente será selecionado para integração com o sistema já em
-desenvolvimento.
-Este projeto oferece uma oportunidade valiosa para os alunos aplicarem seus
-conhecimentos teóricos na prática, desenvolvendo uma solução que terá um
-impacto significativo na qualidade dos serviços prestados pelo hospital. Além
-disso, contribuirá para a formação profissional dos alunos, preparando-os para
-enfrentar desafios reais no campo da programação.
+## Visão Geral
 
-## Objetivo:
-O objetivo deste projeto é capacitar os alunos a aplicar os conceitos e práticas
-aprendidas na disciplina de Programação Orientada a Objetos de forma a criar
-um sistema que facilite e otimize as atividades dos maqueiros em um hospital
-público. O sistema deve abordar as necessidades específicas dos maqueiros,
-melhorando a eficiência e a comunicação dentro do ambiente hospitalar.
+O Patient Mover foi desenvolvido para otimizar e gerenciar o processo de transporte de pacientes dentro do hospital. O sistema possui duas interfaces principais: uma para administradores e outra para maqueiros, permitindo uma gestão eficiente e transparente dos transportes.
 
-## Descrição do Problema:
-Os maqueiros em um hospital público enfrentam desafios diários na organização
-e no transporte de pacientes dentro da instituição. Muitas vezes, a falta de
-comunicação, recursos limitados e sistemas desatualizados podem dificultar
-suas tarefas, resultando em atrasos e possíveis impactos na qualidade do
-atendimento aos pacientes.
+## Tecnologias Utilizadas
 
-##Requisitos do Sistema:
-A seguir são elencados requisitos básicos do sistema. Vocês devem elaborar
-também outros requisitos funcionais. E, além disso, deve criar os requisitos não
-funcionais.
+- **Frontend:** Vue.js
+- **Backend:** Laravel (PHP)
+- **Banco de Dados:** MySQL
+- **Servidor Web:** Apache
+- **Hospedagem:** AWS EC2 e Vercel
 
-## Agendamento de Transporte de Pacientes:
-• O sistema deve permitir que os maqueiros recebam e visualizem
-solicitações de transporte de pacientes.
-• Os maqueiros devem poder aceitar ou recusar solicitações de transporte.
-• Deve haver um registro de histórico de solicitações de transporte para
-referência futura.
+## Funcionalidades
 
-## Rastreamento de Pacientes:
-• Os maqueiros devem ser capazes de visualizar a localização e o status
-dos pacientes a serem transportados.
-• O sistema deve atualizar automaticamente o status do paciente conforme
-o transporte progride (por exemplo, "Aguardando transporte", "Em
-transporte", "Chegou ao destino").
+### Para Administradores:
+- **Dashboard:** Visualização de estatísticas gerais.
+- **Solicitação de Transporte:** Solicitação e gerenciamento de transportes.
+- **Gerenciamento de Maqueiros:** Adicionar, ativar, inativar e editar informações de maqueiros.
+- **Visualização de Transportes:** Acesso a todos os transportes solicitados, em andamento e concluídos.
 
-## Gestão de Prioridades:
-• Deve ser possível priorizar pacientes com base na urgência do transporte.
+### Para Maqueiros:
+- **Dashboard:** Visualização de transportes atribuídos.
+- **Aceitação e Recusa de Transportes:** Possibilidade de aceitar ou recusar transportes.
+- **Início e Conclusão de Transportes:** Funções para iniciar e concluir transportes.
+- **Registro de Incidentes:** Registro de quaisquer incidentes ocorridos durante o transporte.
 
-## Registro de Incidentes:
-• Deve existir uma função para os maqueiros relatarem incidentes ou
-problemas durante o transporte de pacientes.
-• Os incidentes devem ser documentados com detalhes relevantes para
-análise e resolução.
+## Instalação
 
-## Acesso Seguro e Restrito:
-• O acesso ao sistema deve ser restrito aos maqueiros e outros
-profissionais de saúde autorizados.
-• Deve haver mecanismos de autenticação e autorização para garantir a
-segurança dos dados do paciente.
+### Pré-requisitos
 
-## Entregáveis do Projeto:
-• Programa funcional do sistema, demonstrando as principais
-funcionalidades descritas no documento de requisitos.
-• Relatório de teste descrevendo os casos de teste e resultados obtidos
-durante a fase de teste.
-• Manual do usuário para os maqueiros, fornecendo instruções claras sobre
-como utilizar o sistema.
+- PHP 8.1+
+- Composer
+- MySQL
+- Apache
+
+## Instalação
+
+### Backend (Laravel)
+
+1. Navegue até o diretório do backend:
+    ```sh
+    cd /path/to/Pacient-Mover/backend
+    ```
+
+2. Instale as dependências:
+    ```sh
+    composer install
+    ```
+
+3. Copie o arquivo de exemplo `.env` e configure suas variáveis de ambiente:
+    ```sh
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+4. Edite o arquivo `.env` e configure suas credenciais do banco de dados:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nome_do_seu_banco_de_dados
+    DB_USERNAME=seu_usuario
+    DB_PASSWORD=sua_senha
+    ```
+
+5. Execute as migrações do banco de dados:
+    ```sh
+    php artisan migrate
+    ```
+
+6. Inicie o servidor:
+    ```sh
+    php artisan serve
+    ```
+
+### Frontend (Vue.js)
+
+1. Navegue até o diretório do frontend:
+    ```sh
+    cd /path/to/Pacient-Mover/frontend
+    ```
+
+2. Instale as dependências:
+    ```sh
+    npm install
+    ```
+
+3. Inicie o servidor de desenvolvimento:
+    ```sh
+    npm run serve
+    ```
+
+### Configuração
+
+1. No frontend, configure a URL do backend no arquivo apiService.js:
+    ```apiService
+    const baseURL = "http://localhost:8000/api";
+    ```
+
+## Uso
+
+### Administradores
+
+1. Faça login com suas credenciais de administrador.
+2. Acesse o dashboard para visualizar estatísticas e gráficos.
+3. Use a seção de maqueiros para gerenciar os maqueiros.
+4. Solicite e gerencie transportes conforme necessário.
+
+### Maqueiros
+
+1. Faça login com suas credenciais de maqueiro.
+2. Acesse o dashboard para visualizar os transportes atribuídos a você.
+3. Aceite, recuse, inicie e conclua transportes conforme necessário.
+4. Registre incidentes se necessário.
+
+## Links Importantes
+
+- **Deploy do Sistema:** [Patient Mover](https://patient-mover.vercel.app/)
+- **Manual do Usuário:** [Link para o Manual do Usuário](https://drive.google.com/file/d/18QPZK-XKLEtNUhF2bNAcXFahJoPF6iy-/view?usp=sharing)
+
+## Contribuição
+
+1. Faça um fork do projeto.
+2. Crie uma nova branch (`git checkout -b feature/nova-funcionalidade`).
+3. Faça commit das suas alterações (`git commit -am 'Adiciona nova funcionalidade'`).
+4. Envie para o branch (`git push origin feature/nova-funcionalidade`).
+5. Crie um novo Pull Request.
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
