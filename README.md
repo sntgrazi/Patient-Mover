@@ -9,6 +9,16 @@ O Patient Mover foi desenvolvido para otimizar e gerenciar o processo de transpo
 - **Deploy do Sistema:** <a href="https://patient-mover.vercel.app/" target="_blank">Patient Mover</a>
 - **Manual do Usuário:** <a href="https://drive.google.com/file/d/18QPZK-XKLEtNUhF2bNAcXFahJoPF6iy-/view?usp=sharing" target="_blank">Link para o Manual do Usuário</a>
 
+## Teste de Usuário
+
+### Administrador
+- **Email:** angelamarques@mailto.plus
+- **Senha:** 123456789
+
+### Maqueiro
+- **Email:** anamaria@mailto.plus
+- **Senha:** anamaria
+
 ## Tecnologias Utilizadas
 
 - **Frontend:** Vue.js
