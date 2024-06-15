@@ -1,7 +1,7 @@
 // Objetivo: centralizar as chamadas de API em um único arquivo
 import axios from 'axios';
 
-const baseURL = "http://18.228.157.46/api";
+const baseURL = "https://pacientmoverapi.me/api";
 
 
 const apiService = axios.create({
